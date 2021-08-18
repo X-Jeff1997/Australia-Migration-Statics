@@ -1,0 +1,59 @@
+---
+title: "A3"
+author: "jeff"
+date: "01/06/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(ozmaps)
+library(sf)
+library(tidyverse)
+
+ozmap()
+state_data <- read_csv("States.csv")
+
+# state_map_data
+state_shp<- ozmap_data("states")
+state_shp
+state_data
+
+state_map_data <- dplyr::inner_join(state_data,state_shp,
+                                    by = c("States" = "NAME"))
+
+state_map_data
+p1 <- ggplot(data=state_map_data,aes(fill=`2020`,geometry=`geometry`))+geom_sf()
+p1
+
+
+
+
+```
+
+```{r}
+ocp_data <- read.csv("occupation.csv")
+ggplot(data=ocp_data, mapping=aes(x=Year,y=Number,color=Occupations))+
+  geom_line()+
+  scale_x_continuous(breaks=seq(2011, 2020, 1))+
+  geom_text(aes(label=`Number`), vjust=1.6, color="white", size=2.5)
+ocp_data
+```
+```{r}
+gender_data <- read_csv("Gender.csv")
+
+gender_data[gender_data$Gender %in% c("Female","Male"),]
+        
+
+```
+
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
